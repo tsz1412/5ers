@@ -9,20 +9,18 @@ import { Request } from 'express';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
+  @UseGuards(AuthGuard('jwt')) // Protect this endpoint
   @Post()
   async create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
   }
 
+  @UseGuards(AuthGuard('jwt')) // Protect this endpoint
   @Get()
   async findAll() {
     return this.usersService.findAll();
   }
 
-  @Get(':username')
-  async findOne(@Param('username') username: string) {
-    return this.usersService.findOne(username);
-  }
 
   @UseGuards(AuthGuard('jwt')) // Protect this endpoint
   @Put('stocks')
@@ -30,4 +28,12 @@ export class UsersController {
     const userId = request.user['_id']; // Get the user ID from the request
     return this.usersService.updateStocks(userId, body.stocks);
   }
+
+  @UseGuards(AuthGuard('jwt')) // Protect this endpoint
+  @Get('me')
+  async getCurrentUser(@Req() request: Request) {
+    const userId = request.user['_id']; // Get the user ID from the request
+    return this.usersService.findById(userId);
+  }
+
 }

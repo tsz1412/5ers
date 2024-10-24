@@ -13,6 +13,10 @@ async function bootstrap() {
     await seederService.seedUsers();
   }
 
+  app.enableCors({
+    origin: process.env.REACT_APP_URL, // Your React app's URL
+  });
+
   await app.listen(process.env.PORT ?? 3000);
 
   if (module.hot) {

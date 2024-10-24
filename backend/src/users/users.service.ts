@@ -21,6 +21,10 @@ export class UsersService {
     return this.userModel.findOne({ username }).exec();
   }
 
+  async findById(id: string): Promise<User | undefined> {
+    return this.userModel.findById(id).exec();
+  }
+
   async updateStocks(userId: string, stocks: string[]): Promise<User> {
     const user = await this.userModel.findById(userId);
     if (!user) {
