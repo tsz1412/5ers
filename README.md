@@ -50,8 +50,10 @@ You can add more users during the seeding proccess by modifing seeder.service.ts
 To run the services using Docker, follow these steps:
 
 1. Ensure Docker is installed on your machine.
-2. Navigate to the root directory of the project where the `docker-compose.yml` file is located.
-3. Run the following command to build and start the services:
+2. Navigate to the <strong><u>backend</u></strong> directory and run `npm i` and `npm run build` to create initial required files required for running the backend service
+3. Navigate to the <strong><u>dashboard</u></strong> directory and run `npm i` and `npm run build` to create initial required files required for running the backend service
+4. Navigate to the root directory of the project where the `docker-compose.yml` file is located.
+5. Run the following command to build and start the services:
     ```sh
     docker-compose up --build
     ```
