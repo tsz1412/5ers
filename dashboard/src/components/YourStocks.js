@@ -18,21 +18,26 @@ const YourStocks = observer(() => {
   const [selectedStock, setSelectedStock] = useState(null); // State to manage selected stock for modal
 
   useEffect(() => {
-    // Fetch user stocks when the component mounts
-    stocksStore.fetchUserStocks();
+    stocksStore.fetchUserStocks(); // Fetch user stocks on mount
   }, [stocksStore]);
 
   useEffect(() => {
-    // Fetch user details if not already present
     if (!authStore.user) {
-      authStore.fetchUserDetails();
+      authStore.fetchUserDetails(); // Fetch user details if not already present
     }
   }, [authStore]);
 
   const handleSearch = async () => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_STOCK_API_BASE_URL}search?query=${searchQuery}&apikey=${process.env.REACT_APP_STOCK_API_TOKEN}`);
-      setSearchResults(response.data);
+      const response = await axios.get(
+        `${process.env.REACT_APP_STOCK_API_BASE_URL}search?query=${searchQuery}&apikey=${process.env.REACT_APP_STOCK_API_TOKEN}`
+      );
+
+      // Filter out stocks that are already in the user's portfolio
+      const filteredResults = response.data.filter(
+        (result) => !stocksStore.userStocks.includes(result.symbol)
+      );
+      setSearchResults(filteredResults);
     } catch (error) {
       console.error('Error fetching search results:', error);
     }
@@ -55,7 +60,7 @@ const YourStocks = observer(() => {
       okType: 'danger',
       cancelText: 'Cancel',
       onOk() {
-        handleRemoveStock(symbol); // Call the remove function if confirmed
+        handleRemoveStock(symbol);
       },
     });
   };
@@ -74,7 +79,9 @@ const YourStocks = observer(() => {
 
   const fetchStockDetails = async (symbol) => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_STOCK_API_BASE_URL}quote/${symbol}?apikey=${process.env.REACT_APP_STOCK_API_TOKEN}`);
+      const response = await axios.get(
+        `${process.env.REACT_APP_STOCK_API_BASE_URL}quote/${symbol}?apikey=${process.env.REACT_APP_STOCK_API_TOKEN}`
+      );
       setSelectedStock(response.data[0]); // Assuming response.data is an array
       showModal(); // Show the modal with stock details
     } catch (error) {
@@ -106,7 +113,7 @@ const YourStocks = observer(() => {
   };
 
   const handleStockClick = (symbol) => {
-    navigate(`/dashboard/stock/${symbol}`);
+    navigate(`/dashboard/stock/${symbol}`); // Navigate to single stock page
   };
 
   // Display a loading state until the user details are fetched
@@ -117,7 +124,7 @@ const YourStocks = observer(() => {
   return (
     <div>
       <h1>Hey {authStore.user.username}, welcome to your stock portfolio.</h1>
-      
+
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
         {/* Search box */}
         <div style={{ width: '45%' }}>
