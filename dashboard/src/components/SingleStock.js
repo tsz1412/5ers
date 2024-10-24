@@ -61,13 +61,6 @@ const SingleStock = () => {
       <div style={{ marginTop: '20px' }}>
         <Button type="primary" onClick={() => navigate(-1)}>Go Back</Button>
         {/* Navigation to another stock (Example: Go to AAPL stock) */}
-        <Button 
-          style={{ marginLeft: '10px' }} 
-          onClick={() => navigate(`/stock/AAPL`)} 
-        >
-          View Apple Inc.
-        </Button>
-        {/* Add more buttons as needed for other stocks */}
       </div>
     </Card>
   );
