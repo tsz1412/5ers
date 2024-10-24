@@ -1,6 +1,9 @@
-import { Controller, Get, Post, Body, Param, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Put, UseGuards, Req } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
+import { AuthGuard } from '@nestjs/passport';
+import { User } from './schemas/user.schema';
+import { Request } from 'express';
 
 @Controller('users')
 export class UsersController {
@@ -21,8 +24,10 @@ export class UsersController {
     return this.usersService.findOne(username);
   }
 
-  @Put(':username/stocks')
-  async updateStocks(@Param('username') username: string, @Body() stocks: string[]) {
-    return this.usersService.updateStocks(username, stocks);
+  @UseGuards(AuthGuard('jwt')) // Protect this endpoint
+  @Put('stocks')
+  async updateUserStocks(@Req() request: Request, @Body() body: { stocks: string[] }) {
+    const userId = request.user['_id']; // Get the user ID from the request
+    return this.usersService.updateStocks(userId, body.stocks);
   }
 }
