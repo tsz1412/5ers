@@ -1,5 +1,0 @@
-# MongoDB connection
-MONGO_URI=mongodb://mongo:27017/mydatabase
-
-# Port the NestJS app will run on
-PORT=3000

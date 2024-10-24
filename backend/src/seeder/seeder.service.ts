@@ -12,12 +12,12 @@ export class SeederService {
   async seedUsers() {
     const users = [
       {
-        username: 'john_doe',
+        username: 'israel_israeli',
         password: await this.hashPassword('password123'),
         stocks: ['AAPL', 'GOOG'],
       },
       {
-        username: 'jane_doe',
+        username: 'eli_cohen',
         password: await this.hashPassword('securePass'),
         stocks: ['TSLA', 'MSFT'],
       },

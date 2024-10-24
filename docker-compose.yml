@@ -14,6 +14,23 @@ services:
     networks:
       - mynetwork
 
+  dashboard:
+    container_name: 5ers_dashboard
+    build:
+      context: ./dashboard
+    ports:
+      - "3001:3001"
+    env_file:
+      - ./dashboard/.env
+    volumes:
+      - ./dashboard:/app
+    working_dir: /app
+    command: npm start
+    networks:
+      - mynetwork
+    depends_on:
+      - backend
+
   mongo:
     image: mongo:latest
     container_name: 5ers_mongo
